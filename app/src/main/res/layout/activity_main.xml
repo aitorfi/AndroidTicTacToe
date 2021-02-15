@@ -9,11 +9,13 @@
     tools:context=".view.MainActivity">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="260dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="30dp"
-        android:text="TIC TAC TOE"
+        android:id="@+id/textViewGameName"
+        android:layout_width="0dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/classic_tictactoe"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="36sp"
@@ -24,28 +26,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonSinglePlayerClassicGame"
+        android:id="@+id/buttonSinglePlayer"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="25dp"
+        android:background="@drawable/round_button_1"
         android:backgroundTint="#2fbbf4"
         android:text="SINGLE PLAYER"
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonMultiPlayerClassicGame"
+        app:layout_constraintBottom_toTopOf="@+id/buttonMultiPlayer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/buttonMultiPlayerClassicGame"
+        android:id="@+id/buttonMultiPlayer"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_button_1"
         android:backgroundTint="#f42f42"
         android:text="MULTI PLAYER"
         android:textSize="30sp"
@@ -54,19 +58,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSinglePlayerClassicGame"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/dotsIndicator"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/tic_tac_toe_board" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewGameName" />
+
+    <com.make.dots.dotsindicator.DotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:padding="6dp"
+        app:dot_drawable="@drawable/ic_dot_darkgrey"
+        app:dot_drawable_unselected="@drawable/ic_dot_lightgrey"
+        app:dot_height="8dp"
+        app:dot_margin="6dp"
+        app:dot_width="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSinglePlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
