@@ -43,43 +43,29 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_classic_tictactoe);
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(getDrawable(R.drawable.gradient_1));
+        //Display Back button on ActionBar.
         actionBar.setDisplayHomeAsUpEnabled(true);
+        //Hide application title.
         actionBar.setDisplayShowTitleEnabled(false);
 
+        //Initializing layout background animation.
+        constraintLayout = findViewById(R.id.classicTictactoeConstraintLayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
+
+        //Initializing game and scoreboard.
         game = new Game();
         int gameMode = (int) getIntent().getExtras().get("GAME_MODE");
-
         scorePlayerX = 0;
         scorePlayerO = 0;
         textViewScorePlayerX = findViewById(R.id.textViewScorePlayerX);
         textViewScorePlayerO = findViewById(R.id.textViewScorePlayerO);
-
         imageViewScoreboardX = findViewById(R.id.imageViewScoreboardX);
         imageViewScoreboardO = findViewById(R.id.imageViewScoreboardO);
-        scoreboardXAnimation = YoYo.with(Techniques.Tada)
-                .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardX);
-        scoreboardOAnimation = YoYo.with(Techniques.Tada)
-                .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardO);
-        scoreboardOAnimation.stop();
-
-        buttonRestartGame = findViewById(R.id.buttonRestartGame);
-        buttonRestartGame.setVisibility(View.INVISIBLE);
-        buttonRestartGame.setOnClickListener((View v) -> {
-            game = new Game();
-            buttonRestartGame.setVisibility(View.INVISIBLE);
-            boardButtons.stream().forEach(button -> {
-                button.setImageAlpha(0);
-                button.setEnabled(true);
-                if(isTurnX) {
-                    scoreboardXAnimation = YoYo.with(Techniques.Tada)
-                            .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardX);
-                } else {
-                    scoreboardOAnimation = YoYo.with(Techniques.Tada)
-                            .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardX);
-                }
-
-            });
-        });
+        startScoreboardAnimation(true);
 
         //Initializing board buttons.
         imageButton0_0 = findViewById(R.id.imageButton0_0);
@@ -105,9 +91,9 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setImageAlpha(0);
 
-            //On click listener for single player game mode.
             button.setOnClickListener((View v) -> {
                 if(gameMode == MainActivity.SINGLE_PLAYER) {
+                    //On click listener for single player game mode.
                     game.play(true, boardButtons.indexOf(button));
                     button.setImageResource(R.drawable.x_player);
                     button.setImageAlpha(255);
@@ -117,31 +103,33 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
                         boardButtons.get(counterPlay).setImageResource(R.drawable.o_player);
                         boardButtons.get(counterPlay).setImageAlpha(255);
                         boardButtons.get(counterPlay).setEnabled(false);
-                        if(game.getGameStatus() != Game.GAME_NOT_FINISHED) {
-                            handleGameOver();
-                        }
-                    } else {
-                        handleGameOver();
                     }
                 } else { //gameMode == MainActivity.MULTI_PLAYER
                     game.play(isTurnX, boardButtons.indexOf(button));
-                    if(isTurnX) {
+                    if(isTurnX)
                         button.setImageResource(R.drawable.x_player);
-                        scoreboardXAnimation.stop();
-                        scoreboardOAnimation = YoYo.with(Techniques.Tada)
-                                .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardO);
-                    } else {
+                    else
                         button.setImageResource(R.drawable.o_player);
-                        scoreboardOAnimation.stop();
-                        scoreboardXAnimation = YoYo.with(Techniques.Tada)
-                                .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardX);
-                    }
+                    stopScoreboardAnimation(isTurnX);
+                    startScoreboardAnimation(!isTurnX);
                     button.setImageAlpha(255);
                     button.setEnabled(false);
                     isTurnX = !isTurnX;
-                    if(game.getGameStatus() != Game.GAME_NOT_FINISHED)
-                        handleGameOver();
+
                 }
+                if(game.getGameStatus() != Game.GAME_NOT_FINISHED)
+                    handleGameOver();
+            });
+        });
+
+        buttonRestartGame = findViewById(R.id.buttonRestartGame);
+        buttonRestartGame.setVisibility(View.INVISIBLE);
+        buttonRestartGame.setOnClickListener((View v) -> {
+            game = new Game();
+            buttonRestartGame.setVisibility(View.INVISIBLE);
+            boardButtons.stream().forEach(button -> {
+                button.setImageAlpha(0);
+                button.setEnabled(true);
             });
         });
     }
@@ -162,9 +150,6 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
     private void handleGameOver() {
         int gameStatus = game.getGameStatus();
 
-        //Stop scoreboard animations.
-        scoreboardXAnimation.stop();
-        scoreboardOAnimation.stop();
         //Disable all board buttons.
         boardButtons.stream().forEach(b -> b.setEnabled(false));
         buttonRestartGame.setVisibility(View.VISIBLE);
@@ -180,5 +165,22 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
             else textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
         }
         //Else it is a draw and nothing happens on the scoreboard.
+    }
+
+    private void stopScoreboardAnimation(boolean stopX) {
+        if(stopX)
+            scoreboardXAnimation.stop();
+        else
+            scoreboardOAnimation.stop();
+    }
+
+    private void startScoreboardAnimation(boolean startX) {
+        if(startX) {
+            scoreboardXAnimation = YoYo.with(Techniques.Tada)
+                    .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardX);
+        } else {
+            scoreboardOAnimation = YoYo.with(Techniques.Tada)
+                    .repeat(YoYo.INFINITE).duration(2500).playOn(imageViewScoreboardO);
+        }
     }
 }

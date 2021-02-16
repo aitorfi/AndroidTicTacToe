@@ -1,10 +1,9 @@
 package com.example.tictactoe.view;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import com.example.tictactoe.R;
 import com.make.dots.dotsindicator.DotsIndicator;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,14 +34,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(getDrawable(R.drawable.gradient_1));
+
         //Initializing layout background animation.
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = findViewById(R.id.classicTictactoeConstraintLayout);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(4000);
         animationDrawable.start();
-
-        textViewGameName = findViewById(R.id.textViewGameName);
 
         viewPager = findViewById(R.id.viewPager);
         //Setting custom adapter to the ViewPager.
@@ -55,9 +53,20 @@ public class MainActivity extends AppCompatActivity {
         dotsIndicator.setViewPager(viewPager);
         viewPager.getAdapter().registerDataSetObserver(dotsIndicator.getDataSetObserver());
         //Changing game name display on scroll change.
-        viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        textViewGameName = findViewById(R.id.textViewGameName);
+        /*viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(viewPager.getCurrentItem() == 0) {
+                    textViewGameName.setText(getString(R.string.classic_tictactoe));
+                } else {
+                    textViewGameName.setText(getString(R.string.ultimate_tictactoe));
+                }
+            }
+        });*/
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
                 if(viewPager.getCurrentItem() == 0) {
                     textViewGameName.setText(getString(R.string.classic_tictactoe));
                 } else {
