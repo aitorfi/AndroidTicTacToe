@@ -2,7 +2,7 @@ package com.example.tictactoe.game;
 
 import java.util.ArrayList;
 
-public class Game {
+public class ClassicTicTacToeGame {
 
     /**
      * This value specifies that the algorithm lost a game.
@@ -30,7 +30,7 @@ public class Game {
     /**
      * Initializes the game with an empty board and being Xs' turn.
      */
-    public Game() {
+    public ClassicTicTacToeGame() {
         //The board uses the character 'E' to specify that a square is empty.
         board = new char[]{'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'};
     }

@@ -54,16 +54,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.getAdapter().registerDataSetObserver(dotsIndicator.getDataSetObserver());
         //Changing game name display on scroll change.
         textViewGameName = findViewById(R.id.textViewGameName);
-        /*viewPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if(viewPager.getCurrentItem() == 0) {
-                    textViewGameName.setText(getString(R.string.classic_tictactoe));
-                } else {
-                    textViewGameName.setText(getString(R.string.ultimate_tictactoe));
-                }
-            }
-        });*/
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -79,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         buttonClassicSinglePlayer.setOnClickListener((View v) -> {
             if(viewPager.getCurrentItem() == 0) { //The item is a Classic TicTacToe board.
                 Intent intentClassicSinglePlayer = new Intent(
-                        MainActivity.this, ClassicTicTacToeActivity.class);
+                        MainActivity.this, ClassicTictactoeActivity.class);
                 intentClassicSinglePlayer.putExtra("GAME_MODE", SINGLE_PLAYER);
                 startActivity(intentClassicSinglePlayer);
             } else { //The item is an Ultimate TicTacToe board.
@@ -91,11 +81,13 @@ public class MainActivity extends AppCompatActivity {
         buttonClassicMultiPlayer.setOnClickListener((View v) -> {
             if(viewPager.getCurrentItem() == 0) { //The item is a Classic TicTacToe board.
                 Intent intentClassicSinglePlayer = new Intent(
-                        MainActivity.this, ClassicTicTacToeActivity.class);
+                        MainActivity.this, ClassicTictactoeActivity.class);
                 intentClassicSinglePlayer.putExtra("GAME_MODE", MULTI_PLAYER);
                 startActivity(intentClassicSinglePlayer);
             } else { //The item is an Ultimate TicTacToe board.
-                Toast.makeText(getApplicationContext(), "Not Implemented Yet.", Toast.LENGTH_SHORT).show();
+                Intent intentClassicSinglePlayer = new Intent(
+                        MainActivity.this, UltimateTictactoeActivity.class);
+                startActivity(intentClassicSinglePlayer);
             }
         });
     }

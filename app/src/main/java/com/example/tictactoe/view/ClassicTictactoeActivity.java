@@ -18,13 +18,13 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.tictactoe.R;
-import com.example.tictactoe.game.Game;
+import com.example.tictactoe.game.ClassicTicTacToeGame;
 
 import java.util.ArrayList;
 
-public class ClassicTicTacToeActivity extends AppCompatActivity {
+public class ClassicTictactoeActivity extends AppCompatActivity {
 
-    private Game game;
+    private ClassicTicTacToeGame game;
     private ConstraintLayout constraintLayout;
     private ImageButton imageButton0_0, imageButton0_1, imageButton0_2,
                         imageButton1_0, imageButton1_1, imageButton1_2,
@@ -57,7 +57,7 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         animationDrawable.start();
 
         //Initializing game and scoreboard.
-        game = new Game();
+        game = new ClassicTicTacToeGame();
         int gameMode = (int) getIntent().getExtras().get("GAME_MODE");
         scorePlayerX = 0;
         scorePlayerO = 0;
@@ -98,7 +98,7 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
                     button.setImageResource(R.drawable.x_player);
                     button.setImageAlpha(255);
                     button.setEnabled(false);
-                    if(game.getGameStatus() == Game.GAME_NOT_FINISHED) {
+                    if(game.getGameStatus() == ClassicTicTacToeGame.GAME_NOT_FINISHED) {
                         int counterPlay = game.counterPlay();
                         boardButtons.get(counterPlay).setImageResource(R.drawable.o_player);
                         boardButtons.get(counterPlay).setImageAlpha(255);
@@ -117,15 +117,15 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
                     isTurnX = !isTurnX;
 
                 }
-                if(game.getGameStatus() != Game.GAME_NOT_FINISHED)
+                if(game.getGameStatus() != ClassicTicTacToeGame.GAME_NOT_FINISHED)
                     handleGameOver();
             });
         });
 
-        buttonRestartGame = findViewById(R.id.buttonRestartGame);
+        buttonRestartGame = findViewById(R.id.buttonRestartGameClassic);
         buttonRestartGame.setVisibility(View.INVISIBLE);
         buttonRestartGame.setOnClickListener((View v) -> {
-            game = new Game();
+            game = new ClassicTicTacToeGame();
             buttonRestartGame.setVisibility(View.INVISIBLE);
             boardButtons.stream().forEach(button -> {
                 button.setImageAlpha(0);
@@ -155,11 +155,11 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         buttonRestartGame.setVisibility(View.VISIBLE);
 
         //Updating scoreboard.
-        if(gameStatus == Game.X_WON) {
+        if(gameStatus == ClassicTicTacToeGame.X_WON) {
             scorePlayerX++;
             if(scorePlayerX >= 10) textViewScorePlayerX.setText(String.valueOf(scorePlayerX));
             else textViewScorePlayerX.setText("0" + String.valueOf(scorePlayerX));
-        } else if(gameStatus == Game.O_WON) {
+        } else if(gameStatus == ClassicTicTacToeGame.O_WON) {
             scorePlayerO++;
             if(scorePlayerO >= 10) textViewScorePlayerO.setText(String.valueOf(scorePlayerO));
             else textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
