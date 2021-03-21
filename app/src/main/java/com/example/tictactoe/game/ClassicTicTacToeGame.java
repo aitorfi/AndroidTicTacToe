@@ -2,44 +2,23 @@ package com.example.tictactoe.game;
 
 import java.util.ArrayList;
 
-public class Game {
-
-    /**
-     * This value specifies that the algorithm lost a game.
-     */
-    public static final int X_WON = -1;
-    /**
-     * This value specifies that the algorithm won a game.
-     */
-    public static final int O_WON = 1;
-    /**
-     * This value specifies that the game finished with a draw.
-     */
-    public static final int DRAW = 0;
-    /**
-     * This value specifies that the game is not finished yet.
-     */
-    public static final int GAME_NOT_FINISHED = 2;
-
-    /**
-     * Classic Tic Tac Toe board to keep track of the game.
-     */
-    private char[] board;
-
+public class ClassicTicTacToeGame extends TicTacToeGame {
 
     /**
      * Initializes the game with an empty board and being Xs' turn.
      */
-    public Game() {
+    public ClassicTicTacToeGame() {
         //The board uses the character 'E' to specify that a square is empty.
         board = new char[]{'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'};
     }
 
-    public void play(boolean isTurnX, int square) {
+    public int play(boolean isTurnX, int square) {
         if(isTurnX)
             board[square] = 'X';
         else
             board[square] = 'O';
+
+        return getGameStatus();
     }
 
     public int counterPlay() {
@@ -124,7 +103,7 @@ public class Game {
     /**
      * Checks whether the game is over or not and who won if it is finished.
      *
-     * The status of the game is expresed using the following constant values:
+     * The status of the game is expressed using the following constant values:
      * {@link #X_WON} (-1), {@link #O_WON} (1),
      * {@link #DRAW} (0) and {@link #GAME_NOT_FINISHED} (2).
      *
