@@ -6,4 +6,5 @@
     <string name="single_player">SINGLE PLAYER</string>
     <string name="multi_player">MULTI PLAYER</string>
     <string name="restart_game">RESTART GAME</string>
+    <string name="back">BACK</string>
 </resources>
