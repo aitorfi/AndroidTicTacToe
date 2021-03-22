@@ -1,5 +1,10 @@
 package com.example.tictactoe.game;
 
+/**
+ * Superclass for a TicTacToe Game Controller.
+ *
+ * @author Aitor Fidalgo (aitorfi)
+ */
 public abstract class TicTacToeGame {
 
     /**
