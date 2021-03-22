@@ -1,6 +1,7 @@
 package com.example.tictactoe.game;
 
 import java.util.ArrayList;
+import java.util.OptionalInt;
 
 public class ClassicTicTacToeGame extends TicTacToeGame {
 
@@ -23,13 +24,13 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
 
     public int counterPlay() {
         ArrayList<int[]> results = new ArrayList<>();
-        int bestPlay = -1, bestResult = -9999;
+        int bestPlay = -1, bestResult = -2000000000;
 
         //Starting the recursion.
         for(int i = 0; i < 9; i++) {
             if(board[i] == 'E') {
                 board[i] = 'O';
-                results.addAll(counterPlayAlgorithm(true, i));
+                results.addAll(counterPlayAlgorithm(true, i, 10));
                 board[i] = 'E';
             }
         }
@@ -55,11 +56,11 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
         return bestPlay;
     }
 
-    public ArrayList<int[]> counterPlayAlgorithm(boolean isTurnX, int square) {
+    public ArrayList<int[]> counterPlayAlgorithm(boolean isTurnX, int square, int resultMultiplier) {
         int gameStatus;
         ArrayList<int[]> results = new ArrayList<>();
         ArrayList<int[]> auxResults;
-        boolean branchInvalidatorLose = false;
+        boolean branchInvalidatorLose = false, branchInvalidatorWin = false;
 
         gameStatus = getGameStatus();
         if(gameStatus == GAME_NOT_FINISHED) {
@@ -71,18 +72,26 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
                         board[i] = 'O';
                     }
                     //Making the recursion with the new tile movement.
-                    auxResults = counterPlayAlgorithm(!isTurnX, square);
+                    auxResults = counterPlayAlgorithm(!isTurnX, square, resultMultiplier - 1);
                     //Restoring the old value of the board.
                     board[i] = 'E';
                     //Checking if there is a lost game that invalidates the whole result branch.
-                    if(auxResults.size() == 1 && auxResults.get(0)[0] == X_WON) {
+                    if(auxResults.size() == 1 && auxResults.get(0)[0] <= X_WON) {
                         branchInvalidatorLose = true;
+                    }
+                    if(auxResults.size() == 1 && auxResults.get(0)[0] >= O_WON) {
+                        branchInvalidatorWin = true;
                     }
                     results.addAll(auxResults);
                 }
             }
 
             if(branchInvalidatorLose) {
+                OptionalInt minValue = results.stream().mapToInt(result -> result[0]).min();
+                results.removeAll(results);
+                results.add(new int[]{minValue.getAsInt(), square});
+                results.add(new int[]{0, square});
+                /*
                 //Making all the wins that descend from loses into loses.
                 results.stream()
                         .filter(result -> result[0] == O_WON)
@@ -91,10 +100,18 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
                 //by adding a draw to the results so that the size is not 0.
                 if(results.size() <= 1)
                     results.add(new int[]{0, square});
+
+                 */
+            } else if(branchInvalidatorWin) {
+                OptionalInt maxValue = results.stream().mapToInt(result -> result[0]).max();
+                results.removeAll(results);
+                results.add(new int[]{maxValue.getAsInt(), square});
+                results.add(new int[]{0, square});
             }
         } else { //Game is over.
             //Adding result of the game to results list.
-            results.add(new int[]{gameStatus, square});
+            int result = (int) Math.pow(gameStatus * resultMultiplier, resultMultiplier);
+            results.add(new int[]{result, square});
         }
 
         return results;
