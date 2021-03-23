@@ -1,7 +1,13 @@
 package com.example.tictactoe.game;
 
 import java.util.ArrayList;
+import java.util.OptionalInt;
 
+/**
+ * Controller for the Classic TicTacToe Game.
+ *
+ * @author Aitor Fidalgo (aitorfi)
+ */
 public class ClassicTicTacToeGame extends TicTacToeGame {
 
     /**
@@ -12,6 +18,13 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
         board = new char[]{'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'};
     }
 
+    /**
+     * A play is made with the users' input.
+     *
+     * @param isTurnX True if it is Xs' turn, false if it is Os' turn.
+     * @param square Square of the first move that was made.
+     * @return The status of the game after the play is made.
+     */
     public int play(boolean isTurnX, int square) {
         if(isTurnX)
             board[square] = 'X';
@@ -21,15 +34,20 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
         return getGameStatus();
     }
 
+    /**
+     * Makes a counter play with the current layout of the board.
+     *
+     * @return Index of the counter play move on the board.
+     */
     public int counterPlay() {
         ArrayList<int[]> results = new ArrayList<>();
-        int bestPlay = -1, bestResult = -9999;
+        int bestPlay = -1, bestResult = -2000000000;
 
         //Starting the recursion.
         for(int i = 0; i < 9; i++) {
             if(board[i] == 'E') {
                 board[i] = 'O';
-                results.addAll(counterPlayAlgorithm(true, i));
+                results.addAll(counterPlayAlgorithm(true, i, 10));
                 board[i] = 'E';
             }
         }
@@ -55,11 +73,19 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
         return bestPlay;
     }
 
-    public ArrayList<int[]> counterPlayAlgorithm(boolean isTurnX, int square) {
+    /**
+     * Recursive function that plays all te possible combinations of the game and saves the results.
+     *
+     * @param isTurnX True if it is Xs' turn, false if it is Os' turn.
+     * @param square Square of the first move that was made.
+     * @param resultMultiplier Keeps track of the number of movements in the game to multipli the results.
+     * @return The results of the recursion.
+     */
+    private ArrayList<int[]> counterPlayAlgorithm(boolean isTurnX, int square, int resultMultiplier) {
         int gameStatus;
         ArrayList<int[]> results = new ArrayList<>();
         ArrayList<int[]> auxResults;
-        boolean branchInvalidatorLose = false;
+        boolean branchInvalidatorLose = false, branchInvalidatorWin = false;
 
         gameStatus = getGameStatus();
         if(gameStatus == GAME_NOT_FINISHED) {
@@ -71,30 +97,42 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
                         board[i] = 'O';
                     }
                     //Making the recursion with the new tile movement.
-                    auxResults = counterPlayAlgorithm(!isTurnX, square);
+                    auxResults = counterPlayAlgorithm(!isTurnX, square, resultMultiplier - 1);
                     //Restoring the old value of the board.
                     board[i] = 'E';
                     //Checking if there is a lost game that invalidates the whole result branch.
-                    if(auxResults.size() == 1 && auxResults.get(0)[0] == X_WON) {
+                    if(auxResults.size() == 1 && auxResults.get(0)[0] <= X_WON) {
                         branchInvalidatorLose = true;
+                    }
+                    if(auxResults.size() == 1 && auxResults.get(0)[0] >= O_WON) {
+                        branchInvalidatorWin = true;
                     }
                     results.addAll(auxResults);
                 }
             }
 
+            // In case there is a win or a lose all the other results from a later recursion are removed.
             if(branchInvalidatorLose) {
-                //Making all the wins that descend from loses into loses.
-                results.stream()
-                        .filter(result -> result[0] == O_WON)
-                        .forEach(wonGame -> wonGame[0] = X_WON);
-                //Making sure a single branch invalidator lose does not happen twice
-                //by adding a draw to the results so that the size is not 0.
-                if(results.size() <= 1)
+                OptionalInt minValue = results.stream().mapToInt(result -> result[0]).min();
+                if(minValue.isPresent()) {
+                    results.clear();
+                    results.add(new int[]{minValue.getAsInt(), square});
                     results.add(new int[]{0, square});
+                }
+            } else if(branchInvalidatorWin) {
+                OptionalInt maxValue = results.stream().mapToInt(result -> result[0]).max();
+                if(maxValue.isPresent()) {
+                    results.clear();
+                    results.add(new int[]{maxValue.getAsInt(), square});
+                    results.add(new int[]{0, square});
+                }
             }
         } else { //Game is over.
-            //Adding result of the game to results list.
-            results.add(new int[]{gameStatus, square});
+            // Adding result of the game to results list.
+            // The following operation is made so that a single win has a better result than
+            // two wins in the next recursion.
+            int result = (int) Math.pow(gameStatus * resultMultiplier, resultMultiplier);
+            results.add(new int[]{result, square});
         }
 
         return results;
