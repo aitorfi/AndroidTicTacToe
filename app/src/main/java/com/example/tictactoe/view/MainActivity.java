@@ -16,6 +16,11 @@ import android.widget.Toast;
 import com.example.tictactoe.R;
 import com.make.dots.dotsindicator.DotsIndicator;
 
+/**
+ * Controller of the main menu of the application.
+ *
+ * @author Aitor Fidalgo (aitorfi on GitHub)
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final int SINGLE_PLAYER = 1;

@@ -23,6 +23,11 @@ import com.example.tictactoe.game.UltimateTicTacToeGame;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that controls the flow of the ultimate Tic Tac Toe game.
+ *
+ * @author Aitor Fidalgo (aitofi on GitHub)
+ */
 public class UltimateTictactoeActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
@@ -49,26 +54,26 @@ public class UltimateTictactoeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ultimate_tictactoe);
 
-        actionBar = getSupportActionBar();
-        constraintLayout = findViewById(R.id.ultimateTictactoeConstraintLayout);
-        gridLayoutMiniBoard = findViewById(R.id.gridLayoutUltimateMiniBoard);
-        imageButton0_0 = findViewById(R.id.imageButtonUltimate0_0);
-        imageButton0_1 = findViewById(R.id.imageButtonUltimate0_1);
-        imageButton0_2 = findViewById(R.id.imageButtonUltimate0_2);
-        imageButton1_0 = findViewById(R.id.imageButtonUltimate1_0);
-        imageButton1_1 = findViewById(R.id.imageButtonUltimate1_1);
-        imageButton1_2 = findViewById(R.id.imageButtonUltimate1_2);
-        imageButton2_0 = findViewById(R.id.imageButtonUltimate2_0);
-        imageButton2_1 = findViewById(R.id.imageButtonUltimate2_1);
-        imageButton2_2 = findViewById(R.id.imageButtonUltimate2_2);
-        buttonRestartGame = findViewById(R.id.buttonRestartGameUltimate);
-        buttonBack = findViewById(R.id.buttonBack);
-        imageViewUltimateBoard = findViewById(R.id.imageViewUltimateBoard);
-        imageViewClassicBoard = findViewById(R.id.imageViewUltimateMiniBoard);
-        imageViewScoreboardX = findViewById(R.id.imageViewScoreboardXUltimate);
-        imageViewScoreboardO = findViewById(R.id.imageViewScoreboardOUltimate);
-        textViewScorePlayerX = findViewById(R.id.textViewScorePlayerXUltimate);
-        textViewScorePlayerO = findViewById(R.id.textViewScorePlayerOUltimate);
+        actionBar               = getSupportActionBar();
+        constraintLayout        = findViewById(R.id.ultimateTictactoeConstraintLayout);
+        gridLayoutMiniBoard     = findViewById(R.id.gridLayoutUltimateMiniBoard);
+        imageButton0_0          = findViewById(R.id.imageButtonUltimate0_0);
+        imageButton0_1          = findViewById(R.id.imageButtonUltimate0_1);
+        imageButton0_2          = findViewById(R.id.imageButtonUltimate0_2);
+        imageButton1_0          = findViewById(R.id.imageButtonUltimate1_0);
+        imageButton1_1          = findViewById(R.id.imageButtonUltimate1_1);
+        imageButton1_2          = findViewById(R.id.imageButtonUltimate1_2);
+        imageButton2_0          = findViewById(R.id.imageButtonUltimate2_0);
+        imageButton2_1          = findViewById(R.id.imageButtonUltimate2_1);
+        imageButton2_2          = findViewById(R.id.imageButtonUltimate2_2);
+        buttonRestartGame       = findViewById(R.id.buttonRestartGameUltimate);
+        buttonBack              = findViewById(R.id.buttonBack);
+        imageViewUltimateBoard  = findViewById(R.id.imageViewUltimateBoard);
+        imageViewClassicBoard   = findViewById(R.id.imageViewUltimateMiniBoard);
+        imageViewScoreboardX    = findViewById(R.id.imageViewScoreboardXUltimate);
+        imageViewScoreboardO    = findViewById(R.id.imageViewScoreboardOUltimate);
+        textViewScorePlayerX    = findViewById(R.id.textViewScorePlayerXUltimate);
+        textViewScorePlayerO    = findViewById(R.id.textViewScorePlayerOUltimate);
 
         boardButtons.add(imageButton0_0);
         boardButtons.add(imageButton0_1);
