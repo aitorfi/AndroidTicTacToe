@@ -22,6 +22,11 @@ import com.example.tictactoe.game.ClassicTicTacToeGame;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that controls the flow of the classic Tic Tac Toe game.
+ *
+ * @author Aitor Fidalgo (aitorfi on GitHub)
+ */
 public class ClassicTictactoeActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
@@ -35,7 +40,6 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
 
     private ArrayList<ImageButton> boardButtons = new ArrayList<>();
     private int scorePlayerX, scorePlayerO;
-    private boolean isTurnX;
     private int gameMode;
 
     private ClassicTicTacToeGame game;
@@ -47,22 +51,22 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classic_tictactoe);
 
-        actionBar = getSupportActionBar();
-        constraintLayout = findViewById(R.id.classicTictactoeConstraintLayout);
-        imageButton0_0 = findViewById(R.id.imageButton0_0);
-        imageButton0_1 = findViewById(R.id.imageButton0_1);
-        imageButton0_2 = findViewById(R.id.imageButton0_2);
-        imageButton1_0 = findViewById(R.id.imageButton1_0);
-        imageButton1_1 = findViewById(R.id.imageButton1_1);
-        imageButton1_2 = findViewById(R.id.imageButton1_2);
-        imageButton2_0 = findViewById(R.id.imageButton2_0);
-        imageButton2_1 = findViewById(R.id.imageButton2_1);
-        imageButton2_2 = findViewById(R.id.imageButton2_2);
-        buttonRestartGame = findViewById(R.id.buttonRestartGameClassic);
-        textViewScorePlayerX = findViewById(R.id.textViewScorePlayerX);
-        textViewScorePlayerO = findViewById(R.id.textViewScorePlayerO);
-        imageViewScoreboardX = findViewById(R.id.imageViewScoreboardX);
-        imageViewScoreboardO = findViewById(R.id.imageViewScoreboardO);
+        actionBar               = getSupportActionBar();
+        constraintLayout        = findViewById(R.id.classicTictactoeConstraintLayout);
+        imageButton0_0          = findViewById(R.id.imageButton0_0);
+        imageButton0_1          = findViewById(R.id.imageButton0_1);
+        imageButton0_2          = findViewById(R.id.imageButton0_2);
+        imageButton1_0          = findViewById(R.id.imageButton1_0);
+        imageButton1_1          = findViewById(R.id.imageButton1_1);
+        imageButton1_2          = findViewById(R.id.imageButton1_2);
+        imageButton2_0          = findViewById(R.id.imageButton2_0);
+        imageButton2_1          = findViewById(R.id.imageButton2_1);
+        imageButton2_2          = findViewById(R.id.imageButton2_2);
+        buttonRestartGame       = findViewById(R.id.buttonRestartGameClassic);
+        textViewScorePlayerX    = findViewById(R.id.textViewScorePlayerX);
+        textViewScorePlayerO    = findViewById(R.id.textViewScorePlayerO);
+        imageViewScoreboardX    = findViewById(R.id.imageViewScoreboardX);
+        imageViewScoreboardO    = findViewById(R.id.imageViewScoreboardO);
 
         boardButtons.add(imageButton0_0);
         boardButtons.add(imageButton0_1);
@@ -75,11 +79,10 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
         boardButtons.add(imageButton2_2);
         scorePlayerX = 0;
         scorePlayerO = 0;
-        isTurnX = true;
         gameMode = (int) getIntent().getExtras().get("GAME_MODE");
 
         game = new ClassicTicTacToeGame();
-        startScoreboardAnimation(isTurnX);
+        startScoreboardAnimation(game.isTurnX());
 
 
         actionBar.setBackgroundDrawable(getDrawable(R.drawable.gradient_1));
@@ -99,6 +102,7 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
 
             button.setOnClickListener((View v) -> {
                 int gameStatus;
+
                 if(gameMode == MainActivity.SINGLE_PLAYER)
                     gameStatus = playSinglePlayerMode(button);
                 else
@@ -121,7 +125,10 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
      * @param button The button chosen by the user to make the play.
      */
     private int playSinglePlayerMode(ImageButton button) {
-        int gameStatus = game.play(true, boardButtons.indexOf(button));
+        int gameStatus;
+
+        // gameStatus = game.play(true, boardButtons.indexOf(button));
+        gameStatus = game.play(boardButtons.indexOf(button));
         button.setImageResource(R.drawable.x_player);
         button.setImageAlpha(255);
         button.setEnabled(false);
@@ -142,16 +149,23 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
      * @param button The button chosen to make the play.
      */
     private int playMultiPlayerMode(ImageButton button) {
-        int gameStatus = game.play(isTurnX, boardButtons.indexOf(button));
+        int gameStatus;
+        boolean isTurnX;
+
+        // It is important to get the isTurnX variable before calling game.play()
+        // because it changes its value after making a move in the board.
+        isTurnX = game.isTurnX();
+        gameStatus = game.play(boardButtons.indexOf(button));
+
         if(isTurnX)
             button.setImageResource(R.drawable.x_player);
         else
             button.setImageResource(R.drawable.o_player);
+
         stopScoreboardAnimation(isTurnX);
         startScoreboardAnimation(!isTurnX);
         button.setImageAlpha(255);
         button.setEnabled(false);
-        isTurnX = !isTurnX;
 
         return gameStatus;
     }
