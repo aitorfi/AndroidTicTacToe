@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author Aitor Fidalgo (aitofi on GitHub)
  */
-public class UltimateTictactoeActivity extends AppCompatActivity {
+public class UltimateTicTacToeActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
     private ConstraintLayout constraintLayout;
@@ -52,7 +52,7 @@ public class UltimateTictactoeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ultimate_tictactoe);
+        setContentView(R.layout.activity_ultimate_tic_tac_toe);
 
         actionBar               = getSupportActionBar();
         constraintLayout        = findViewById(R.id.ultimateTictactoeConstraintLayout);

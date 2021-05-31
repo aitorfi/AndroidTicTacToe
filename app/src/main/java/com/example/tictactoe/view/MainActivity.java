@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter pagerAdapter;
     private DotsIndicator dotsIndicator;
-    private Button buttonClassicSinglePlayer, buttonClassicMultiPlayer;
+    private Button buttonSinglePlayer, buttonMultiPlayer;
     private TextView textViewGameName;
-    private static final int[] IMAGES = {R.drawable.tic_tac_toe_board, R.drawable.ultimate_tictactoe_board};
+    private static final int[] IMAGES = {R.drawable.tic_tac_toe_board, R.drawable.ultimate_tictactoe_board, R.drawable.gobblet_tic_tac_toe_board};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(getDrawable(R.drawable.gradient_1));
 
         //Initializing layout background animation.
-        constraintLayout = findViewById(R.id.classicTictactoeConstraintLayout);
+        constraintLayout = findViewById(R.id.classicTicTacToeConstraintLayout);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(4000);
@@ -62,36 +62,57 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                if(viewPager.getCurrentItem() == 0) {
-                    textViewGameName.setText(getString(R.string.classic_tictactoe));
-                } else {
-                    textViewGameName.setText(getString(R.string.ultimate_tictactoe));
+                switch (position) {
+                    case 0:
+                        textViewGameName.setText(getString(R.string.classic_tictactoe));
+                        break;
+                    case 1:
+                        textViewGameName.setText(getString(R.string.ultimate_tictactoe));
+                        break;
+                    case 2:
+                        textViewGameName.setText(getString(R.string.gobble_tictactoe));
+                        break;
                 }
             }
         });
 
-        buttonClassicSinglePlayer = findViewById(R.id.buttonSinglePlayer);
-        buttonClassicSinglePlayer.setOnClickListener((View v) -> {
-            if(viewPager.getCurrentItem() == 0) { //The item is a Classic TicTacToe board.
-                Intent intentClassicSinglePlayer = new Intent(
-                        MainActivity.this, ClassicTictactoeActivity.class);
+        buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
+        buttonSinglePlayer.setOnClickListener((View v) -> {
+            Intent intentClassicSinglePlayer = null;
+            switch (viewPager.getCurrentItem()) {
+                case 0: // Classic Tic Tac Toe
+                    intentClassicSinglePlayer = new Intent(MainActivity.this, ClassicTicTacToeActivity.class);
+                    break;
+                case 1: // Ultimate Tic Tac Toe
+                case 2: // Gobblet Tic Tac Toe
+                    Toast.makeText(getApplicationContext(), getString(R.string.not_implemented_yet), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+            if (intentClassicSinglePlayer != null){
                 intentClassicSinglePlayer.putExtra("GAME_MODE", SINGLE_PLAYER);
                 startActivity(intentClassicSinglePlayer);
-            } else { //The item is an Ultimate TicTacToe board.
-                Toast.makeText(getApplicationContext(), "Not Implemented Yet.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        buttonClassicMultiPlayer = findViewById(R.id.buttonMultiPlayer);
-        buttonClassicMultiPlayer.setOnClickListener((View v) -> {
-            if(viewPager.getCurrentItem() == 0) { //The item is a Classic TicTacToe board.
-                Intent intentClassicSinglePlayer = new Intent(
-                        MainActivity.this, ClassicTictactoeActivity.class);
+        buttonMultiPlayer = findViewById(R.id.buttonMultiPlayer);
+        buttonMultiPlayer.setOnClickListener((View v) -> {
+            Intent intentClassicSinglePlayer = null;
+
+            switch (viewPager.getCurrentItem()) {
+                case 0: // Classic Tic Tac Toe
+                    intentClassicSinglePlayer = new Intent(MainActivity.this, ClassicTicTacToeActivity.class);
+                    break;
+                case 1: // Ultimate Tic Tac Toe
+                    intentClassicSinglePlayer = new Intent(MainActivity.this, UltimateTicTacToeActivity.class);
+                    break;
+                case 2: // Gobblet Tic Tac Toe
+                    intentClassicSinglePlayer = new Intent(MainActivity.this, GobbletTicTacToeActivity.class);
+                    break;
+            }
+
+            if (intentClassicSinglePlayer != null) {
                 intentClassicSinglePlayer.putExtra("GAME_MODE", MULTI_PLAYER);
-                startActivity(intentClassicSinglePlayer);
-            } else { //The item is an Ultimate TicTacToe board.
-                Intent intentClassicSinglePlayer = new Intent(
-                        MainActivity.this, UltimateTictactoeActivity.class);
                 startActivity(intentClassicSinglePlayer);
             }
         });
