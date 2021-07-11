@@ -10,9 +10,7 @@ import java.util.OptionalInt;
  */
 public class ClassicTicTacToeGame extends TicTacToeGame {
 
-    /**
-     * Representation of the board to keep track of the game.
-     */
+    /** Board to keep track of the game.*/
     private char[] board;
     private long auxResult;
     private boolean isTurnX, branchInvalidatorResult;

@@ -100,17 +100,10 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setImageAlpha(0);
 
-            button.setOnClickListener((View v) -> {
-                int gameStatus;
-
-                if(gameMode == MainActivity.SINGLE_PLAYER)
-                    gameStatus = playSinglePlayerMode(button);
-                else
-                    gameStatus = playMultiPlayerMode(button);
-
-                if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
-                    handleGameOver(gameStatus);
-            });
+            if(gameMode == MainActivity.SINGLE_PLAYER)
+                button.setOnClickListener((View v) -> playSinglePlayerMode(button));
+            else
+                button.setOnClickListener((View v) -> playMultiPlayerMode(button));
         });
 
         buttonRestartGame.setVisibility(View.INVISIBLE);
@@ -124,10 +117,9 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
      *
      * @param button The button chosen by the user to make the play.
      */
-    private int playSinglePlayerMode(ImageButton button) {
+    private void playSinglePlayerMode(ImageButton button) {
         int gameStatus;
 
-        // gameStatus = game.play(true, boardButtons.indexOf(button));
         gameStatus = game.play(boardButtons.indexOf(button));
         button.setImageResource(R.drawable.x_player);
         button.setImageAlpha(255);
@@ -140,7 +132,8 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
             gameStatus = game.getGameStatus();
         }
 
-        return gameStatus;
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
+            handleGameOver(gameStatus);
     }
 
     /**
@@ -148,7 +141,7 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
      *
      * @param button The button chosen to make the play.
      */
-    private int playMultiPlayerMode(ImageButton button) {
+    private void playMultiPlayerMode(ImageButton button) {
         int gameStatus;
         boolean isTurnX;
 
@@ -167,7 +160,8 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         button.setImageAlpha(255);
         button.setEnabled(false);
 
-        return gameStatus;
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
+            handleGameOver(gameStatus);
     }
 
     /**
