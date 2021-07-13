@@ -27,7 +27,7 @@ import java.util.ArrayList;
  *
  * @author Aitor Fidalgo (aitorfi on GitHub)
  */
-public class ClassicTictactoeActivity extends AppCompatActivity {
+public class ClassicTicTacToeActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
     private ConstraintLayout constraintLayout;
@@ -49,10 +49,10 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_classic_tictactoe);
+        setContentView(R.layout.activity_classic_tic_tac_toe);
 
         actionBar               = getSupportActionBar();
-        constraintLayout        = findViewById(R.id.classicTictactoeConstraintLayout);
+        constraintLayout        = findViewById(R.id.classicTicTacToeConstraintLayout);
         imageButton0_0          = findViewById(R.id.imageButton0_0);
         imageButton0_1          = findViewById(R.id.imageButton0_1);
         imageButton0_2          = findViewById(R.id.imageButton0_2);
@@ -100,17 +100,10 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setImageAlpha(0);
 
-            button.setOnClickListener((View v) -> {
-                int gameStatus;
-
-                if(gameMode == MainActivity.SINGLE_PLAYER)
-                    gameStatus = playSinglePlayerMode(button);
-                else
-                    gameStatus = playMultiPlayerMode(button);
-
-                if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
-                    handleGameOver(gameStatus);
-            });
+            if(gameMode == MainActivity.SINGLE_PLAYER)
+                button.setOnClickListener((View v) -> playSinglePlayerMode(button));
+            else
+                button.setOnClickListener((View v) -> playMultiPlayerMode(button));
         });
 
         buttonRestartGame.setVisibility(View.INVISIBLE);
@@ -124,23 +117,35 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
      *
      * @param button The button chosen by the user to make the play.
      */
-    private int playSinglePlayerMode(ImageButton button) {
+    private void playSinglePlayerMode(ImageButton button) {
         int gameStatus;
 
-        // gameStatus = game.play(true, boardButtons.indexOf(button));
         gameStatus = game.play(boardButtons.indexOf(button));
-        button.setImageResource(R.drawable.x_player);
-        button.setImageAlpha(255);
-        button.setEnabled(false);
+        mirrorBoard();
+
         if(gameStatus == ClassicTicTacToeGame.GAME_NOT_FINISHED) {
-            int counterPlay = game.counterPlay();
-            boardButtons.get(counterPlay).setImageResource(R.drawable.o_player);
-            boardButtons.get(counterPlay).setImageAlpha(255);
-            boardButtons.get(counterPlay).setEnabled(false);
-            gameStatus = game.getGameStatus();
+            gameStatus = game.counterPlay();
+            mirrorBoard();
         }
 
-        return gameStatus;
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED) {
+            handleGameOver(gameStatus);
+        }
+    }
+
+    /**
+     * Mirrors the board of the current game on the screen.
+     */
+    private void mirrorBoard() {
+        char[] board = game.getBoard();
+
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] != 'E') {
+                boardButtons.get(i).setImageResource((board[i] == 'X') ? R.drawable.x_player : R.drawable.o_player);
+                boardButtons.get(i).setImageAlpha(255);
+                boardButtons.get(i).setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -148,7 +153,7 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
      *
      * @param button The button chosen to make the play.
      */
-    private int playMultiPlayerMode(ImageButton button) {
+    private void playMultiPlayerMode(ImageButton button) {
         int gameStatus;
         boolean isTurnX;
 
@@ -157,17 +162,16 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
         isTurnX = game.isTurnX();
         gameStatus = game.play(boardButtons.indexOf(button));
 
-        if(isTurnX)
-            button.setImageResource(R.drawable.x_player);
-        else
-            button.setImageResource(R.drawable.o_player);
+        button.setImageResource(isTurnX ? R.drawable.x_player : R.drawable.o_player);
 
         stopScoreboardAnimation(isTurnX);
         startScoreboardAnimation(!isTurnX);
         button.setImageAlpha(255);
         button.setEnabled(false);
 
-        return gameStatus;
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED) {
+            handleGameOver(gameStatus);
+        }
     }
 
     /**
@@ -181,12 +185,20 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
         //Updating scoreboard.
         if(gameStatus == ClassicTicTacToeGame.X_WON) {
             scorePlayerX++;
-            if(scorePlayerX >= 10) textViewScorePlayerX.setText(String.valueOf(scorePlayerX));
-            else textViewScorePlayerX.setText("0" + String.valueOf(scorePlayerX));
+
+            if(scorePlayerX >= 10) {
+                textViewScorePlayerX.setText(String.valueOf(scorePlayerX));
+            } else {
+                textViewScorePlayerX.setText("0" + String.valueOf(scorePlayerX));
+            }
         } else if(gameStatus == ClassicTicTacToeGame.O_WON) {
             scorePlayerO++;
-            if(scorePlayerO >= 10) textViewScorePlayerO.setText(String.valueOf(scorePlayerO));
-            else textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
+
+            if(scorePlayerO >= 10) {
+                textViewScorePlayerO.setText(String.valueOf(scorePlayerO));
+            } else {
+                textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
+            }
         }
         //Else it is a draw and nothing happens on the scoreboard.
     }
@@ -197,6 +209,7 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
     private void handleButtonRestartGame() {
         game = new ClassicTicTacToeGame();
         buttonRestartGame.setVisibility(View.INVISIBLE);
+
         boardButtons.stream().forEach(button -> {
             button.setImageAlpha(0);
             button.setEnabled(true);
@@ -219,10 +232,11 @@ public class ClassicTictactoeActivity extends AppCompatActivity {
      * @param stopX True for stopping X shape image animation, false for the O shape image.
      */
     private void stopScoreboardAnimation(boolean stopX) {
-        if(stopX)
+        if(stopX) {
             scoreboardXAnimation.stop();
-        else
+        } else {
             scoreboardOAnimation.stop();
+        }
     }
 
     /**

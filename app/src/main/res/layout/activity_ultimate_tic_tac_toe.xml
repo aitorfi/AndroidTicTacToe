@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ultimateTictactoeConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_list_1"
+    tools:context=".view.UltimateTicTacToeActivity">
+
+    <ImageView
+        android:id="@+id/imageViewUltimateBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRestartGameUltimate"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:srcCompat="@drawable/ultimate_tictactoe_board"
+        tools:srcCompat="@drawable/ultimate_tictactoe_board" />
+
+    <ImageView
+        android:id="@+id/imageViewUltimateMiniBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRestartGameUltimate"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:srcCompat="@drawable/tic_tac_toe_board"
+        tools:srcCompat="@drawable/tic_tac_toe_board" />
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayoutUltimateMiniBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:columnCount="9"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintStart_toStartOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewUltimateBoard"
+        app:orientation="horizontal"
+        app:rowCount="9">
+
+        <!-- 81 ImageViews are added programmatically -->
+    </androidx.gridlayout.widget.GridLayout>
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayoutUltimateBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:columnCount="3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintStart_toStartOf="@+id/imageViewUltimateBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewUltimateBoard"
+        app:orientation="horizontal"
+        app:rowCount="3">
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate0_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/x_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate0_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/o_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate0_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/x_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate1_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/o_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/x_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/o_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate2_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/x_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate2_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/o_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUltimate2_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/x_player"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <Button
+        android:id="@+id/buttonRestartGameUltimate"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/round_button_2"
+        android:text="@string/restart_game"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/round_button_2"
+        android:text="@string/back"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewScoreboardUltimate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:background="#A6FFFFFF"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tictactoe_scoreboard" />
+
+    <TextView
+        android:id="@+id/textViewScorePlayerXUltimate"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="80dp"
+        android:text="00"
+        android:textAlignment="center"
+        android:textColor="#f42f42"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardUltimate" />
+
+    <TextView
+        android:id="@+id/textViewScorePlayerOUltimate"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="80dp"
+        android:text="00"
+        android:textAlignment="center"
+        android:textColor="#2fbbf4"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageViewScoreboardXUltimate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardUltimate"
+        app:srcCompat="@drawable/x_player64x64" />
+
+    <ImageView
+        android:id="@+id/imageViewScoreboardOUltimate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardUltimate"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/o_player64x64" />
+</androidx.constraintlayout.widget.ConstraintLayout>

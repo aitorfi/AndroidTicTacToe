@@ -3,8 +3,10 @@
 
     <string name="classic_tictactoe">CLASSIC\nTIC TAC TOE</string>
     <string name="ultimate_tictactoe">ULTIMATE\nTIC TAC TOE</string>
+    <string name="gobble_tictactoe">GOBBLE\nTIC TAC TOE</string>
     <string name="single_player">SINGLE PLAYER</string>
     <string name="multi_player">MULTI PLAYER</string>
     <string name="restart_game">RESTART GAME</string>
     <string name="back">BACK</string>
+    <string name="not_implemented_yet">Not Implemented Yet.</string>
 </resources>

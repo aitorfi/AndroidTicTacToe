@@ -2,128 +2,134 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/classicTictactoeConstraintLayout"
+    android:id="@+id/gobbletTicTacToeConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_list_1"
-    tools:context=".view.ClassicTictactoeActivity">
+    tools:context=".view.GobbletTicTacToeActivity">
 
     <ImageView
-        android:id="@+id/imageViewClassicBoard"
+        android:id="@+id/imageViewGobbletBoard"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/buttonRestartGameClassic"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutGobbletTileChooser"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewScoreboard"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewScoreboardGobblet"
         app:srcCompat="@drawable/tic_tac_toe_board"
         tools:srcCompat="@drawable/tic_tac_toe_board" />
 
     <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/gridLayoutImgeButton"
+        android:id="@+id/gridLayoutImageButtonGobblet"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:columnCount="3"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewClassicBoard"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewClassicBoard"
-        app:layout_constraintStart_toStartOf="@+id/imageViewClassicBoard"
-        app:layout_constraintTop_toTopOf="@+id/imageViewClassicBoard"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewGobbletBoard"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewGobbletBoard"
+        app:layout_constraintStart_toStartOf="@+id/imageViewGobbletBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewGobbletBoard"
         app:orientation="horizontal"
         app:rowCount="3">
 
         <ImageButton
-            android:id="@+id/imageButton0_0"
+            android:id="@+id/imageButtonGobblet0_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="26dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/x_player"
+            android:src="@drawable/blue_gobblet_level2"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton0_1"
+            android:id="@+id/imageButtonGobblet0_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="36dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/o_player"
+            android:src="@drawable/blue_gobblet_level1"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton0_2"
+            android:id="@+id/imageButtonGobblet0_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/x_player"
+            android:src="@drawable/blue_gobblet_level3"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton1_0"
+            android:id="@+id/imageButtonGobblet1_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="26dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/o_player"
+            android:src="@drawable/red_gobblet_level2"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton1_1"
+            android:id="@+id/imageButtonGobblet1_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="36dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/x_player"
+            android:src="@drawable/red_gobblet_level1"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton1_2"
+            android:id="@+id/imageButtonGobblet1_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/o_player"
+            android:src="@drawable/red_gobblet_level3"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton2_0"
+            android:id="@+id/imageButtonGobblet2_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="36dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/x_player"
+            android:src="@drawable/blue_gobblet_level1"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton2_1"
+            android:id="@+id/imageButtonGobblet2_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="26dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/o_player"
+            android:src="@drawable/blue_gobblet_level2"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
 
         <ImageButton
-            android:id="@+id/imageButton2_2"
+            android:id="@+id/imageButtonGobblet2_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/x_player"
+            android:src="@drawable/red_gobblet_level3"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1" />
     </androidx.gridlayout.widget.GridLayout>
 
     <Button
-        android:id="@+id/buttonRestartGameClassic"
+        android:id="@+id/buttonRestartGameGobblet"
         android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/round_button_2"
         android:text="@string/restart_game"
         android:textColor="#000000"
@@ -134,7 +140,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewScoreboard"
+        android:id="@+id/imageViewScoreboardGobblet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -149,7 +155,7 @@
         app:srcCompat="@drawable/tictactoe_scoreboard" />
 
     <TextView
-        android:id="@+id/textViewScorePlayerX"
+        android:id="@+id/textViewScorePlayerXGobblet"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="80dp"
@@ -158,12 +164,12 @@
         android:textColor="#f42f42"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboard"
-        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboard"
-        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboard" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardGobblet" />
 
     <TextView
-        android:id="@+id/textViewScorePlayerO"
+        android:id="@+id/textViewScorePlayerOGobblet"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="80dp"
@@ -172,35 +178,79 @@
         android:textColor="#2fbbf4"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboard"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboard"
-        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboard"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardGobblet"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imageViewScoreboardX"
+        android:id="@+id/imageViewScoreboardXGobblet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboard"
-        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboard"
-        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboard"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintStart_toStartOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardGobblet"
         app:srcCompat="@drawable/x_player64x64" />
 
     <ImageView
-        android:id="@+id/imageViewScoreboardO"
+        android:id="@+id/imageViewScoreboardOGobblet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboard"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboard"
-        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboard"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewScoreboardGobblet"
+        app:layout_constraintTop_toTopOf="@+id/imageViewScoreboardGobblet"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/o_player64x64" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutGobbletTileChooser"
+        android:layout_width="0dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_button_2"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonGobbletLevel1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="15px"
+            android:layout_weight="1"
+            android:background="@drawable/round_button_1"
+            android:tag="1"
+            app:srcCompat="@drawable/blue_gobblet_level1" />
+
+        <ImageButton
+            android:id="@+id/imageButtonGobbletLevel2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="15px"
+            android:layout_weight="1"
+            android:background="@drawable/round_button_1"
+            android:tag="2"
+            app:srcCompat="@drawable/blue_gobblet_level2" />
+
+        <ImageButton
+            android:id="@+id/imageButtonGobbletLevel3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="15px"
+            android:layout_weight="1"
+            android:background="@drawable/round_button_1"
+            android:tag="3"
+            app:srcCompat="@drawable/blue_gobblet_level3" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,52 +48,47 @@ public abstract class TicTacToeGame {
                 else if(board[i] == 'O')
                     gameStatus = O_WON;
 
-                break;
+                return gameStatus;
             }
         }
 
-        if(gameStatus == DRAW) {
-            //Checking the columns of the board.
-            for(int i = 0; i < 3; i++) {
-                if(board[i] == board[i+3] && board[i] == board[i+6] && board[i] != 'E') {
-                    if(board[i] == 'X')
-                        gameStatus = X_WON;
-                    else if(board[i] == 'O')
-                        gameStatus = O_WON;
-
-                    break;
-                }
-            }
-        }
-
-        if(gameStatus == DRAW) {
-            //Checking diagonal starting at the top left corner.
-            if (board[0] == board[4] && board[0] == board[8] && board[0] != 'E') {
-                if (board[0] == 'X')
+        //Checking the columns of the board.
+        for(int i = 0; i < 3; i++) {
+            if(board[i] == board[i+3] && board[i] == board[i+6] && board[i] != 'E') {
+                if(board[i] == 'X')
                     gameStatus = X_WON;
-                else if (board[0] == 'O')
+                else if(board[i] == 'O')
                     gameStatus = O_WON;
+
+                return gameStatus;
             }
         }
 
-        if(gameStatus == DRAW) {
-            //Checking diagonal starting at the top right corner.
-            if (board[2] == board[4] && board[2] == board[6] && board[2] != 'E') {
-                if (board[2] == 'X')
-                    gameStatus = X_WON;
-                else if (board[2] == 'O')
-                    gameStatus = O_WON;
-            }
+        //Checking diagonal starting at the top left corner.
+        if (board[0] == board[4] && board[0] == board[8] && board[0] != 'E') {
+            if (board[0] == 'X')
+                gameStatus = X_WON;
+            else if (board[0] == 'O')
+                gameStatus = O_WON;
+
+            return gameStatus;
+        }
+
+        //Checking diagonal starting at the top right corner.
+        if (board[2] == board[4] && board[2] == board[6] && board[2] != 'E') {
+            if (board[2] == 'X')
+                gameStatus = X_WON;
+            else if (board[2] == 'O')
+                gameStatus = O_WON;
+
+            return gameStatus;
         }
 
         //Checking if the board is full of tiles.
-        if(gameStatus == DRAW) {
-            for(int i = 0; i < 9; i++) {
-                if(board[i] == 'E') {
-                    gameStatus = GAME_NOT_FINISHED;
-
-                    break;
-                }
+        for(int i = 0; i < 9; i++) {
+            if(board[i] == 'E') {
+                gameStatus = GAME_NOT_FINISHED;
+                break;
             }
         }
 
