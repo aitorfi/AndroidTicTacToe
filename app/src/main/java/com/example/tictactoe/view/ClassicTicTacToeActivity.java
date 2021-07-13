@@ -121,19 +121,31 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         int gameStatus;
 
         gameStatus = game.play(boardButtons.indexOf(button));
-        button.setImageResource(R.drawable.x_player);
-        button.setImageAlpha(255);
-        button.setEnabled(false);
+        mirrorBoard();
+
         if(gameStatus == ClassicTicTacToeGame.GAME_NOT_FINISHED) {
-            int counterPlay = game.counterPlay();
-            boardButtons.get(counterPlay).setImageResource(R.drawable.o_player);
-            boardButtons.get(counterPlay).setImageAlpha(255);
-            boardButtons.get(counterPlay).setEnabled(false);
-            gameStatus = game.getGameStatus();
+            gameStatus = game.counterPlay();
+            mirrorBoard();
         }
 
-        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED) {
             handleGameOver(gameStatus);
+        }
+    }
+
+    /**
+     * Mirrors the board of the current game on the screen.
+     */
+    private void mirrorBoard() {
+        char[] board = game.getBoard();
+
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] != 'E') {
+                boardButtons.get(i).setImageResource((board[i] == 'X') ? R.drawable.x_player : R.drawable.o_player);
+                boardButtons.get(i).setImageAlpha(255);
+                boardButtons.get(i).setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -150,18 +162,16 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         isTurnX = game.isTurnX();
         gameStatus = game.play(boardButtons.indexOf(button));
 
-        if(isTurnX)
-            button.setImageResource(R.drawable.x_player);
-        else
-            button.setImageResource(R.drawable.o_player);
+        button.setImageResource(isTurnX ? R.drawable.x_player : R.drawable.o_player);
 
         stopScoreboardAnimation(isTurnX);
         startScoreboardAnimation(!isTurnX);
         button.setImageAlpha(255);
         button.setEnabled(false);
 
-        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED)
+        if(gameStatus != ClassicTicTacToeGame.GAME_NOT_FINISHED) {
             handleGameOver(gameStatus);
+        }
     }
 
     /**
@@ -175,12 +185,20 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
         //Updating scoreboard.
         if(gameStatus == ClassicTicTacToeGame.X_WON) {
             scorePlayerX++;
-            if(scorePlayerX >= 10) textViewScorePlayerX.setText(String.valueOf(scorePlayerX));
-            else textViewScorePlayerX.setText("0" + String.valueOf(scorePlayerX));
+
+            if(scorePlayerX >= 10) {
+                textViewScorePlayerX.setText(String.valueOf(scorePlayerX));
+            } else {
+                textViewScorePlayerX.setText("0" + String.valueOf(scorePlayerX));
+            }
         } else if(gameStatus == ClassicTicTacToeGame.O_WON) {
             scorePlayerO++;
-            if(scorePlayerO >= 10) textViewScorePlayerO.setText(String.valueOf(scorePlayerO));
-            else textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
+
+            if(scorePlayerO >= 10) {
+                textViewScorePlayerO.setText(String.valueOf(scorePlayerO));
+            } else {
+                textViewScorePlayerO.setText("0" + String.valueOf(scorePlayerO));
+            }
         }
         //Else it is a draw and nothing happens on the scoreboard.
     }
@@ -191,6 +209,7 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
     private void handleButtonRestartGame() {
         game = new ClassicTicTacToeGame();
         buttonRestartGame.setVisibility(View.INVISIBLE);
+
         boardButtons.stream().forEach(button -> {
             button.setImageAlpha(0);
             button.setEnabled(true);
@@ -213,10 +232,11 @@ public class ClassicTicTacToeActivity extends AppCompatActivity {
      * @param stopX True for stopping X shape image animation, false for the O shape image.
      */
     private void stopScoreboardAnimation(boolean stopX) {
-        if(stopX)
+        if(stopX) {
             scoreboardXAnimation.stop();
-        else
+        } else {
             scoreboardOAnimation.stop();
+        }
     }
 
     /**

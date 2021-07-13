@@ -10,20 +10,21 @@ import java.util.OptionalInt;
  */
 public class ClassicTicTacToeGame extends TicTacToeGame {
 
-    /** Board to keep track of the game.*/
+    /**
+     * Board to keep track of the game.
+     */
     private char[] board;
-    private long auxResult;
-    private boolean isTurnX, branchInvalidatorResult;
+    private boolean isTurnX;
 
 
     /**
      * Initializes the game with an empty board and being Xs' turn.
      */
     public ClassicTicTacToeGame() {
-        //The board uses the character 'E' to specify that a square is empty.
+        // The board uses the character 'E' to specify that a square is empty.
         board = new char[]{'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'};
+        // board = new char[]{'X', 'X', 'E', 'O', 'E', 'E', 'E', 'E', 'O'};
         isTurnX = true;
-        branchInvalidatorResult = false;
     }
 
     /**
@@ -33,109 +34,133 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
      * @return The status of the game after the play is made.
      */
     public int play(int square) {
-        if(isTurnX)
-            board[square] = 'X';
-        else
-            board[square] = 'O';
-
+        board[square] = isTurnX ? 'X' : 'O';
         isTurnX = !isTurnX;
+
         return getGameStatus(board);
     }
 
     /**
-     * Makes a counter play with the current layout of the board.
+     * Makes a counter play on the board.
      *
      * @return Index of the counter play move on the board.
      */
     public int counterPlay() {
-        ArrayList<long[]> results = new ArrayList<>();
-        int bestPlay = -1;
-        long bestResult = Long.MIN_VALUE;
+        int bestPlaySquare = -1;
+        int bestPossibleScore = getDepth(board);
+        int bestScore = bestPossibleScore * (-1);
+        int score;
 
-        // Loop over the board and call recursive method.
-        // isTurnX should be false at this point.
-        for(int square = 0; square < 9; square++) {
-            if(board[square] == 'E') {
+        for (int square = 0; square < board.length; square++) {
+            if (board[square] == 'E') {
                 board[square] = 'O';
+
+                if (getGameStatus() != TicTacToeGame.GAME_NOT_FINISHED) {
+                    bestPlaySquare = square;
+                    break;
+                }
+
                 isTurnX = !isTurnX;
-                results.add(new long[]{counterPlayAlgorithm(), square});
+                score = counterPlayAlgorithm(bestPossibleScore - 1, bestScore);
                 board[square] = 'E';
-            }
-        }
-        isTurnX = !isTurnX; // Method play will change the turn too
 
-        //Choosing the best play from the results.
-        for (long[] r : results) {
-            if (r[0] > bestResult) {
-                bestResult = r[0];
-                bestPlay = (int) r[1];
-            }
-        }
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestPlaySquare = square;
 
-        board[bestPlay] = 'O';
-        return bestPlay;
-    }
-
-    /**
-     * Recursive function that plays all te possible combinations for the game and saves the results.
-     *
-     * @return The results of the recursion.
-     */
-    private long counterPlayAlgorithm() {
-        long gameStatus;
-        long result = DRAW;
-
-        gameStatus = getGameStatus(board);
-
-        if(gameStatus == GAME_NOT_FINISHED) {
-            for(int i = 0; i < 9; i++) {
-                if(board[i] == 'E') {
-                    if(isTurnX)
-                        board[i] = 'X';
-                    else
-                        board[i] = 'O';
-
-                    isTurnX = !isTurnX;
-
-                    //Making the recursion with the new tile movement.
-                    auxResult = counterPlayAlgorithm();
-                    //Restoring the old value of the board for next recursion.
-                    board[i] = 'E';
-
-                    //Checking if there is a lost game that invalidates the whole result branch.
-                    if (branchInvalidatorResult) {
-                        result = auxResult;
-                        branchInvalidatorResult = false;
-
+                    if (bestScore == bestPossibleScore) {
                         break;
                     }
-
-                    result += auxResult;
                 }
             }
-
-        } else if (gameStatus != DRAW) {
-            // The following operation is made so that a single win
-            // has a better result than two wins in the next recursion.
-            int resultMultiplier = 1;
-
-            for (int i = 0; i < board.length; i++) {
-                if (board[i] == 'E') {
-                    resultMultiplier++;
-                }
-            }
-
-            result = (long) Math.pow(gameStatus * resultMultiplier, resultMultiplier);
-
-            if (gameStatus == X_WON && result > 0) {
-                // The power operation might make a negative result into a positive one.
-                result = result * -1;
-            }
-            branchInvalidatorResult = true;
         }
 
         isTurnX = !isTurnX;
-        return result;
+        board[bestPlaySquare] = 'O';
+        return getGameStatus(board);
+    }
+
+    /**
+     * Recursive function that finds the best move in a tic tac toe game (minimax algorithm implementation).
+     *
+     * This method is meant to be called from another method that handles the scores and chooses
+     * the best move.
+     *
+     * @return The score of the recursion.
+     */
+    private int counterPlayAlgorithm(int depth, int bestScoreParent) {
+        int bestPossibleScore = isTurnX ? depth * (-1) : depth;
+        int bestScore = bestPossibleScore * (-1);
+        int score;
+
+        for (int square = 0; square < board.length; square++) {
+            if (board[square] == 'E') {
+                board[square] = isTurnX ? 'X' : 'O'; // Player makes a move.
+
+                int gameStatus = getGameStatus(board);
+
+                // Check if the game is finished after making a move.
+                if (gameStatus != TicTacToeGame.GAME_NOT_FINISHED) {
+                    if (gameStatus == TicTacToeGame.DRAW) {
+                        bestScore = 0;
+                    } else if ((isTurnX && gameStatus == TicTacToeGame.X_WON) ||
+                            (!isTurnX && gameStatus == TicTacToeGame.O_WON)) {
+                        bestScore = bestPossibleScore;
+                    } else {
+                        bestScore = bestPossibleScore * (-1);
+                    }
+
+                    board[square] = 'E'; // Set the initial state of the board.
+                    break;
+                }
+
+                isTurnX = !isTurnX; // Change player turn for next recursion.
+                score = counterPlayAlgorithm(depth - 1, bestScore);
+                board[square] = 'E'; // Set the initial state of the board.
+
+                // On X players' turn bestScoreParent will only increase and bestScore will decrease
+                // so if bestScoreParent is greater than bestScore recursion can be broken.
+                // In O players turn the opposite happens.
+                if (isTurnX) {
+                    if (score < bestScore) {
+                        bestScore = score;
+
+                        if (bestScoreParent > bestScore) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (score > bestScore) {
+                        bestScore = score;
+
+                        if (bestScoreParent < bestScore) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        isTurnX = !isTurnX; // Set the turn of the previous recursion.
+        return bestScore;
+    }
+
+    /**
+     * Returns the depth of a tic tac toe game by counting the free tiles of the board.
+     *
+     * @param board The board where the game is being played.
+     * @return The depth of the game (number of free tiles in the board).
+     */
+    private int getDepth(char[] board) {
+        int depth = 0;
+
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == 'E') {
+                depth++;
+            }
+        }
+
+        return depth;
     }
 
     /**
@@ -150,5 +175,9 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
      */
     public boolean isTurnX() {
         return isTurnX;
+    }
+
+    public char[] getBoard() {
+        return board;
     }
 }
