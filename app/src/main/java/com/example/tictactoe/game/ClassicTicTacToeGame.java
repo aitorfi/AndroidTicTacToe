@@ -67,10 +67,6 @@ public class ClassicTicTacToeGame extends TicTacToeGame {
                 if (score > bestScore) {
                     bestScore = score;
                     bestPlaySquare = square;
-
-                    if (bestScore == bestPossibleScore) {
-                        break;
-                    }
                 }
             }
         }

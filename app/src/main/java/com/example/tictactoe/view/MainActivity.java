@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                     intentClassicSinglePlayer = new Intent(MainActivity.this, ClassicTicTacToeActivity.class);
                     break;
                 case 1: // Ultimate Tic Tac Toe
+                    intentClassicSinglePlayer = new Intent(MainActivity.this, UltimateTicTacToeActivity.class);
+                    break;
                 case 2: // Gobblet Tic Tac Toe
                     Toast.makeText(getApplicationContext(), getString(R.string.not_implemented_yet), Toast.LENGTH_SHORT).show();
                     break;

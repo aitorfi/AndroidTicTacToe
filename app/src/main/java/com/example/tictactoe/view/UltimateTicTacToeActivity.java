@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.tictactoe.R;
+import com.example.tictactoe.game.TicTacToeGame;
 import com.example.tictactoe.game.UltimateTicTacToeGame;
 
 import java.util.ArrayList;
@@ -42,8 +43,7 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
 
     private ArrayList<ImageButton> boardButtons = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> miniBoardImages = new ArrayList<>();
-    private boolean isTurnX;
-    private int currentMiniBoardIndex, nextBoardStatus, scorePlayerX, scorePlayerO;
+    private int currentMiniBoardIndex, nextBoardStatus, scorePlayerX, scorePlayerO, gameMode;
 
     private UltimateTicTacToeGame game;
     private YoYo.YoYoString scoreboardXAnimation, scoreboardOAnimation;
@@ -87,11 +87,11 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
         addMiniBoardImagesToLayout();
         scorePlayerX = 0;
         scorePlayerO = 0;
-        isTurnX = true;
+        gameMode = (int) getIntent().getExtras().get("GAME_MODE");
         nextBoardStatus = UltimateTicTacToeGame.GAME_NOT_FINISHED;
 
         game = new UltimateTicTacToeGame();
-        startScoreboardAnimation(isTurnX);
+        startScoreboardAnimation(true);
 
 
         actionBar.setBackgroundDrawable(getDrawable(R.drawable.gradient_1));
@@ -116,50 +116,7 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setImageAlpha(0);
 
-            button.setOnClickListener((View v) -> {
-                if(imageViewUltimateBoard.getVisibility() == View.VISIBLE) {
-                    currentMiniBoardIndex = boardButtons.indexOf(button);
-                    //Switching from ultimate board to classic board.
-                    imageViewUltimateBoard.setVisibility(View.INVISIBLE);
-                    imageViewClassicBoard.setVisibility(View.VISIBLE);
-                    //Hiding all mini board X and O images.
-                    miniBoardImages.stream().forEach(image -> {
-                        image.stream().forEach(img -> img.setImageAlpha(0));
-                    });
-                    //Getting the actual layout of the mini game to show the appropriate images.
-                    displayMiniBoardLayout(currentMiniBoardIndex);
-                    buttonBack.setVisibility(View.VISIBLE);
-                } else {
-                    //Making the play on the mini board.
-                    game.play(isTurnX, currentMiniBoardIndex, boardButtons.indexOf(button));
-                    //Getting the status of the board where the next player has to play.
-                    nextBoardStatus = game.getMiniBoardStatus(boardButtons.indexOf(button));
-
-                    //Getting the actual state of all mini games to show the appropriate images.
-                    displayAllMiniBoardsLayout();
-                    //Getting the actual state of the ultimate game to show the appropriate images.
-                    displayUltimateBoardLayout();
-                    if(game.getUltimateBoardStatus() == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
-                        if(nextBoardStatus == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
-                            boardButtons.stream()
-                                    .filter(View::isEnabled)
-                                    .forEach(boardButton -> boardButton.setEnabled(false));
-                            button.setEnabled(true);
-                        }
-                    } else {
-                        handleGameOver();
-                    }
-
-                    //Switching from classic board to ultimate board.
-                    imageViewUltimateBoard.setVisibility(View.VISIBLE);
-                    imageViewClassicBoard.setVisibility(View.INVISIBLE);
-                    //Changing scoreboard animations.
-                    stopScoreboardAnimation(isTurnX);
-                    isTurnX = !isTurnX;
-                    startScoreboardAnimation(isTurnX);
-                    buttonBack.setVisibility(View.INVISIBLE);
-                }
-            });
+            button.setOnClickListener((View v) -> playMultiPlayerMode(button));
         });
 
         buttonBack.setVisibility(View.INVISIBLE);
@@ -196,6 +153,125 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
         });
     }
 
+    private void playMultiPlayerMode(ImageButton button) {
+        if(imageViewUltimateBoard.getVisibility() == View.VISIBLE) {
+            currentMiniBoardIndex = boardButtons.indexOf(button);
+            //Switching from ultimate board to classic board.
+            imageViewUltimateBoard.setVisibility(View.INVISIBLE);
+            imageViewClassicBoard.setVisibility(View.VISIBLE);
+            //Hiding all mini board X and O images.
+            miniBoardImages.stream().forEach(image -> {
+                image.stream().forEach(img -> img.setImageAlpha(0));
+            });
+            //Getting the actual layout of the mini game to show the appropriate images.
+            displayMiniBoardLayout(currentMiniBoardIndex);
+            buttonBack.setVisibility(View.VISIBLE);
+        } else {
+            int boardStatus;
+
+            //Making the play on the mini board.
+            boardStatus = game.play(currentMiniBoardIndex, boardButtons.indexOf(button));
+            //Getting the status of the board where the next player has to play.
+            nextBoardStatus = game.getMiniBoardStatus(boardButtons.indexOf(button));
+
+            if(boardStatus == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
+                int nextMiniBoardIndex = -1;
+
+                if (gameMode == MainActivity.SINGLE_PLAYER) {
+                    if (nextBoardStatus == TicTacToeGame.GAME_NOT_FINISHED) {
+                        nextMiniBoardIndex = game.counterPlay(boardButtons.indexOf(button));
+                    } else {
+                        nextMiniBoardIndex = game.counterPlay(-1);
+                    }
+
+                    // nextBoardStatus = game.getMiniBoardStatus(nextMiniBoardIndex);
+                }
+
+                //Getting the actual state of all mini games to show the appropriate images.
+                displayAllMiniBoardsLayout();
+                //Getting the actual state of the ultimate game to show the appropriate images.
+                displayUltimateBoardLayout();
+                
+                /*if(nextBoardStatus == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
+                    // Disable all buttons
+                    boardButtons.stream()
+                            .filter(View::isEnabled)
+                            .forEach(boardButton -> boardButton.setEnabled(false));
+                    // Enable next miniBoard button.
+                    button.setEnabled(true);
+                }*/
+                if (gameMode == MainActivity.SINGLE_PLAYER && nextMiniBoardIndex != -1) {
+                    boardButtons.stream()
+                            .filter(View::isEnabled)
+                            .forEach(b -> b.setEnabled(false));
+
+                    boardButtons.get(nextMiniBoardIndex).setEnabled(true);
+                }
+            }
+
+            if (game.getUltimateBoardStatus() != TicTacToeGame.GAME_NOT_FINISHED) {
+                handleGameOver();
+            }
+
+            //Switching from classic board to ultimate board.
+            imageViewUltimateBoard.setVisibility(View.VISIBLE);
+            imageViewClassicBoard.setVisibility(View.INVISIBLE);
+
+            if (gameMode == MainActivity.MULTI_PLAYER) {
+                // Changing scoreboard animations.
+                stopScoreboardAnimation(!game.isTurnX());
+                startScoreboardAnimation(game.isTurnX());
+            }
+
+            buttonBack.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /*private void playMultiPlayerMode(ImageButton button) {
+        if(imageViewUltimateBoard.getVisibility() == View.VISIBLE) {
+            currentMiniBoardIndex = boardButtons.indexOf(button);
+            //Switching from ultimate board to classic board.
+            imageViewUltimateBoard.setVisibility(View.INVISIBLE);
+            imageViewClassicBoard.setVisibility(View.VISIBLE);
+            //Hiding all mini board X and O images.
+            miniBoardImages.stream().forEach(image -> {
+                image.stream().forEach(img -> img.setImageAlpha(0));
+            });
+            //Getting the actual layout of the mini game to show the appropriate images.
+            displayMiniBoardLayout(currentMiniBoardIndex);
+            buttonBack.setVisibility(View.VISIBLE);
+        } else {
+            //Making the play on the mini board.
+            game.play(currentMiniBoardIndex, boardButtons.indexOf(button));
+            //Getting the status of the board where the next player has to play.
+            nextBoardStatus = game.getMiniBoardStatus(boardButtons.indexOf(button));
+
+            //Getting the actual state of all mini games to show the appropriate images.
+            displayAllMiniBoardsLayout();
+            //Getting the actual state of the ultimate game to show the appropriate images.
+            displayUltimateBoardLayout();
+
+            if(game.getUltimateBoardStatus() == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
+                if(nextBoardStatus == UltimateTicTacToeGame.GAME_NOT_FINISHED) {
+                    boardButtons.stream()
+                            .filter(View::isEnabled)
+                            .forEach(boardButton -> boardButton.setEnabled(false));
+                    button.setEnabled(true);
+                }
+            } else {
+                handleGameOver();
+            }
+
+            //Switching from classic board to ultimate board.
+            imageViewUltimateBoard.setVisibility(View.VISIBLE);
+            imageViewClassicBoard.setVisibility(View.INVISIBLE);
+            //Changing scoreboard animations.
+            stopScoreboardAnimation(!game.isTurnX());
+            startScoreboardAnimation(game.isTurnX());
+            buttonBack.setVisibility(View.INVISIBLE);
+        }
+    }*/
+
     /**
      * Retrieves the layout of the specified mini board and shows it on screen.
      *
@@ -224,6 +300,7 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
      */
     private void displayAllMiniBoardsLayout() {
         ArrayList<char[]> miniBoards = game.getAllMiniBoards();
+
         miniBoards.stream().forEach(board -> {
             int boardIndex = miniBoards.indexOf(board);
             for(int i = 0; i < 9; i++) {
@@ -256,7 +333,7 @@ public class UltimateTicTacToeActivity extends AppCompatActivity {
                 boardButtons.get(i).setEnabled(false);
             } else {
                 boardButtons.get(i).setImageAlpha(0);
-                boardButtons.get(i).setEnabled(true);
+                boardButtons.get(i).setEnabled(ultimateBoard[i] == 'E');
             }
         }
     }

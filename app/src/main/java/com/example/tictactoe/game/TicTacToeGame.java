@@ -37,12 +37,12 @@ public abstract class TicTacToeGame {
      *
      * @return The status of the game.
      */
-    protected int getGameStatus(char[] board) {
+    public static int getGameStatus(char[] board) {
         int gameStatus = DRAW;
 
         //Checking the rows of the board.
         for(int i = 0; i < 9; i+=3) {
-            if(board[i] == board[i+1] && board[i] == board[i+2] && board[i] != 'E') {
+            if(board[i] == board[i+1] && board[i] == board[i+2] && board[i] != 'E' && board[i] != 'D') {
                 if(board[i] == 'X')
                     gameStatus = X_WON;
                 else if(board[i] == 'O')
@@ -54,7 +54,7 @@ public abstract class TicTacToeGame {
 
         //Checking the columns of the board.
         for(int i = 0; i < 3; i++) {
-            if(board[i] == board[i+3] && board[i] == board[i+6] && board[i] != 'E') {
+            if(board[i] == board[i+3] && board[i] == board[i+6] && board[i] != 'E' && board[i] != 'D') {
                 if(board[i] == 'X')
                     gameStatus = X_WON;
                 else if(board[i] == 'O')
@@ -65,7 +65,7 @@ public abstract class TicTacToeGame {
         }
 
         //Checking diagonal starting at the top left corner.
-        if (board[0] == board[4] && board[0] == board[8] && board[0] != 'E') {
+        if (board[0] == board[4] && board[0] == board[8] && board[0] != 'E' && board[0] != 'D') {
             if (board[0] == 'X')
                 gameStatus = X_WON;
             else if (board[0] == 'O')
@@ -75,7 +75,7 @@ public abstract class TicTacToeGame {
         }
 
         //Checking diagonal starting at the top right corner.
-        if (board[2] == board[4] && board[2] == board[6] && board[2] != 'E') {
+        if (board[2] == board[4] && board[2] == board[6] && board[2] != 'E' && board[2] != 'D') {
             if (board[2] == 'X')
                 gameStatus = X_WON;
             else if (board[2] == 'O')
